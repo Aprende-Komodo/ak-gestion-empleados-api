@@ -1,0 +1,10 @@
+{
+  "name": "gestion-empleados-api",
+  "version": "1.0.0",
+  "main": "handler.js",
+  "author": "Luis Briceno",
+  "license": "MIT",
+  "scripts": {
+    "deploy:dev": "sls deploy --stage dev --region us-east-1"
+  }
+}
