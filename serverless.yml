@@ -10,10 +10,37 @@ provider:
   stage: ${opt:stage}
   region: ${opt:region}
 
+plugins:
+  - serverless-offline
+
 functions:
-  hello:
-    handler: handler.hello
+  getEmpleados:
+    handler: infraestructure/handlers/empleados-handler.getEmpleados
     events:
       - http:
-          path: hello       # https://dominio.fulanito/{stage}/hello
+          path: empleados       # https://dominio.fulanito/{stage}/empleados
+          method: get
+  createEmpleado:
+    handler: infraestructure/handlers/empleados-handler.createEmpleado
+    events:
+      - http:
+          path: empleados       # https://dominio.fulanito/{stage}/empleados
+          method: post
+  updateEmpleado:
+    handler: infraestructure/handlers/empleados-handler.updateEmpleado
+    events:
+      - http:
+          path: empleados/{id}       # https://dominio.fulanito/{stage}/empleados/{id}
+          method: put
+  deleteEmpleado:
+    handler: infraestructure/handlers/empleados-handler.deleteEmpleado
+    events:
+      - http:
+          path: empleados/{id}       # https://dominio.fulanito/{stage}/empleados/{id}
+          method: delete
+  getDetailEmpleado:
+    handler: infraestructure/handlers/empleados-handler.getDetailEmpleado
+    events:
+      - http:
+          path: empleados/{id}       # https://dominio.fulanito/{stage}/empleados/{id}
           method: get
