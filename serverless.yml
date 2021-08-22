@@ -9,6 +9,13 @@ provider:
   profile: lbriceno-personal
   stage: ${opt:stage}
   region: ${opt:region}
+  apiGateway:
+      request:
+        schemas:
+          empleado-input-model:
+            name: EmpleadoInputModel
+            schema: ${file(infraestructure/handlers/schemas/empleados-schema.json)}
+            description: "Validacion de los datos del empleado"
 
 plugins:
   - serverless-offline
@@ -26,12 +33,18 @@ functions:
       - http:
           path: empleados       # https://dominio.fulanito/{stage}/empleados
           method: post
+          request:
+            schemas:
+              application/json: empleado-input-model
   updateEmpleado:
     handler: infraestructure/handlers/empleados-handler.updateEmpleado
     events:
       - http:
           path: empleados/{id}       # https://dominio.fulanito/{stage}/empleados/{id}
           method: put
+          request:
+            schemas:
+              application/json: empleado-input-model
   deleteEmpleado:
     handler: infraestructure/handlers/empleados-handler.deleteEmpleado
     events:

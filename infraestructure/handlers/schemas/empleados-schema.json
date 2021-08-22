@@ -1,0 +1,71 @@
+{
+    "$schema": "http://json-schema.org/draft-04/schema#",
+    "title": "EmpleadoInputModel",
+    "description": "Validacion de los datos del empleado",
+    "type": "object",
+    "properties": {
+        "primerNombre": {
+            "description": "Primer nombre del empleado",
+            "type": "string",
+            "maxLength": 20,
+            "minLength": 2
+        },
+        "segundoNombre": {
+            "description": "Segundo nombre del empleado",
+            "type": [
+                "string",
+                "null"
+            ],
+            "maxLength": 20
+        },
+        "primerApellido": {
+            "description": "Primer apellido del empleado",
+            "type": "string",
+            "maxLength": 20,
+            "minLength": 2
+        },
+        "segundoApellido": {
+            "description": "Segundo apellido del empleado",
+            "type": [
+                "string",
+                "null"
+            ],
+            "maxLength": 20
+        },
+        "fechaNacimiento": {
+            "description": "Fecha de nacimiento del empleado (YYYY-MM-DD)",
+            "type": "string",
+            "pattern": "([1-2][0-9][0-9][0-9])-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[01])$"
+        },
+        "tipoIdentificacion": {
+            "description": "Tipo de identificacion del empleado (cc, pas, otro)",
+            "enum": [
+                "cc",
+                "pas",
+                "otro"
+            ]
+        },
+        "numeroIdentificacion": {
+            "description": "Numero de identificacion del empleado",
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 15
+        },
+        "sueldo": {
+            "description": "Sueldo del empleado (100-9999999)",
+            "type": "number",
+            "minimum": 100,
+            "maximum": 9999999
+        }
+    },
+    "required": [
+        "primerNombre",
+        "segundoNombre",
+        "primerApellido",
+        "segundoApellido",
+        "fechaNacimiento",
+        "tipoIdentificacion",
+        "numeroIdentificacion",
+        "sueldo"
+    ]
+}
