@@ -1,5 +1,6 @@
 const { responseSuccess, responseFail } = require('../helpers/responses');
-const { StatusCodes } = require('http-status-codes')
+const { StatusCodes } = require('http-status-codes');
+const empleadoUseCase = require('../../domain/usecase/empleados-usecase');
 
 const data = [
     {
@@ -30,13 +31,13 @@ const getEmpleados = async () => {
 
     try {
 
-        response = responseSuccess({ data });
+        const result = await empleadoUseCase.getEmpleados();
+        response = responseSuccess({ data: result });
         
     } catch (error) {
 
-        response = responseFail({
-            message: "Error inesperado"
-        });
+        console.log(error)
+        response = responseFail(error);
         
     }
 
@@ -51,15 +52,14 @@ const createEmpleado = async (empleadoData) => {
     try {
 
         console.log("empleadoData", empleadoData)
+        await empleadoUseCase.createEmpleado(empleadoData);
         response = responseSuccess({ 
             message: "Empleado creado!!"
          }, StatusCodes.CREATED);
         
     } catch (error) {
 
-        response = responseFail({
-            message: "Error inesperado"
-        });
+        response = responseFail(error);
         
     }
 
@@ -75,15 +75,14 @@ const updateEmpleado = async (empleadoData, id) => {
 
         console.log("empleadoData", empleadoData)
         console.log("id", id)
+        await empleadoUseCase.updateEmpleado(empleadoData, id);
         response = responseSuccess({ 
             message: "Empleado actualizado!!"
          }, StatusCodes.OK);
         
     } catch (error) {
 
-        response = responseFail({
-            message: "Error inesperado"
-        });
+        response = responseFail(error);
         
     }
 
@@ -98,15 +97,14 @@ const deleteEmpleado = async (id) => {
     try {
 
         console.log("id", id)
+        await empleadoUseCase.deleteEmpleado(id);
         response = responseSuccess({
             message: "Empleado eliminado"
         }, StatusCodes.OK);
         
     } catch (error) {
 
-        response = responseFail({
-            message: "Error inesperado"
-        });
+        response = responseFail(error);
         
     }
 
@@ -121,15 +119,15 @@ const getDetailEmpleado = async (id) => {
     try {
 
         console.log("id", id)
+        const empleado = await empleadoUseCase.getDetailEmpleado(id);
         response = responseSuccess({
-            data: data[0]
+            data: empleado
         }, StatusCodes.OK);
         
     } catch (error) {
-
-        response = responseFail({
-            message: "Error inesperado"
-        });
+        console.log('getDeattailEmpleado', error)
+        
+        response = responseFail(error);
         
     }
 
