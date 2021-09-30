@@ -1,6 +1,7 @@
 const empleadoAdapter = require('../../application/model_adapters/empleado-adapter');
 const { HttpError } = require('../../application/exceptions/http-error')
-const { StatusCodes } = require('http-status-codes')
+const { StatusCodes } = require('http-status-codes');
+const empleadoRestAdapter = require('../../application/rest_adapters/empleado-rest-adapter');
 
 const getEmpleados = async () => {
     return empleadoAdapter.findEmpleados();
@@ -13,6 +14,14 @@ const createEmpleado = async (empleadoData) => {
     );
 
     await empleadoAdapter.createEmpleado(empleadoData);
+
+    const empleadoCreado = await empleadoAdapter.getEmpleadoByTipoNumeroIdentificacion(
+        empleadoData.tipoIdentificacion,
+        empleadoData.numeroIdentificacion
+    );
+
+    await empleadoRestAdapter.saveHistoricoEmpleado(empleadoData.sueldo, 0, empleadoCreado[0].id)
+
 }
 
 const updateEmpleado = async (empleadoData, id) => {
@@ -24,7 +33,14 @@ const updateEmpleado = async (empleadoData, id) => {
         id
     );
 
+    const empleadoAnterior = await empleadoAdapter.findOneEmpleado(id);
+    console.log('empleadoAnterior', empleadoAnterior)
+
     await empleadoAdapter.updateEmpleado(empleadoData, id);
+
+    if ( empleadoAnterior.sueldo != empleadoData.sueldo ){
+        await empleadoRestAdapter.saveHistoricoEmpleado(empleadoData.sueldo, empleadoAnterior.sueldo, id);
+    }
 
 }
 
@@ -40,6 +56,8 @@ const getDetailEmpleado = async (id) => {
 
     if(empleado == null)
         throw new HttpError("Empleado no existe", StatusCodes.NOT_FOUND);
+
+    empleado.historico = await empleadoRestAdapter.getHistoricoEmpleado(id);
 
     return empleado;
 }

@@ -7,12 +7,13 @@
   "scripts": {
     "deploy:dev": "sls deploy --stage dev --region us-east-1",
     "deploy:stg": "sls deploy --stage stg --region us-east-1",
-    "offline": "sls offline --stage dev --region us-east-1 --host 0.0.0.0"
+    "offline": "sls offline --stage dev --region us-east-1 --host 0.0.0.0 --lambdaPort 3301 --httpPort 3300"
   },
   "devDependencies": {
     "serverless-offline": "^7.0.0"
   },
   "dependencies": {
+    "axios": "^0.21.4",
     "http-status-codes": "^2.1.4",
     "knex": "^0.95.11",
     "mysql": "^2.18.1"
